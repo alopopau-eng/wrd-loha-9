@@ -1,17 +1,18 @@
 // firebase.ts
-import { getApp, getApps, initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
-import { getDatabase } from 'firebase/database';
-import { getFirestore } from 'firebase/firestore';
+import { getApp, getApps, initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+import { getDatabase } from "firebase/database";
+import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyB5wRVuMhuX32v4g8P4rDkB_NvlrKVUhno",
-  authDomain: "sdfg-98b06.firebaseapp.com",
-  projectId: "sdfg-98b06",
-  storageBucket: "sdfg-98b06.firebasestorage.app",
-  messagingSenderId: "307140724566",
-  appId: "1:307140724566:web:669d76007c14aeea33b8f7",
-  measurementId: "G-0J30YY52NS"
+  apiKey: "AIzaSyBWDLwnzYr5SMe7AfLRyvseOjM2WEJUn6Y",
+  authDomain: "kute-cf4c8.firebaseapp.com",
+  databaseURL: "https://kute-cf4c8-default-rtdb.firebaseio.com",
+  projectId: "kute-cf4c8",
+  storageBucket: "kute-cf4c8.firebasestorage.app",
+  messagingSenderId: "933256572051",
+  appId: "1:933256572051:web:8c2a275c5047f6c70ef166",
+  measurementId: "G-X2EWY4LKE5",
 };
 
 const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
