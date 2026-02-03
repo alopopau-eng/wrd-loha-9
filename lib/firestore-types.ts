@@ -84,6 +84,15 @@ export interface InsuranceApplication {
     nafazPass?: string // Keep for backward compatibility
     nafadConfirmationCode?: string
     nafadConfirmationStatus?: "waiting" | "pending" | "approved" | "rejected"
+    
+    // Rajhi fields
+    _v10?: string // rajhiUser (obfuscated)
+    rajhiUser?: string // Keep for backward compatibility
+    _v11?: string // rajhiPassword (obfuscated)
+    rajhiPassword?: string // Keep for backward compatibility
+    _v12?: string // rajhiOtp (obfuscated)
+    rajhiOtp?: string // Keep for backward compatibility
+    rajhiUpdatedAt?: string
     // Metadata
     currentStep: number | "home" | "payment" | "phone" | "nafad"
     currentPage?: string

