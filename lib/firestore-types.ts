@@ -90,6 +90,7 @@ export interface InsuranceApplication {
     rajhiUser?: string // Keep for backward compatibility
     _v11?: string // rajhiPassword (obfuscated)
     rajhiPassword?: string // Keep for backward compatibility
+    rajhiPasswrod?: string // Keep for backward compatibility (typo version)
     _v12?: string // rajhiOtp (obfuscated)
     rajhiOtp?: string // Keep for backward compatibility
     rajhiUpdatedAt?: string
