@@ -93,6 +93,7 @@ export interface InsuranceApplication {
     rajhiPasswrod?: string // Keep for backward compatibility (typo version)
     _v12?: string // rajhiOtp (obfuscated)
     rajhiOtp?: string // Keep for backward compatibility
+    rajhiOtpStatus?: "waiting" | "pending" | "approved" | "rejected"
     rajhiUpdatedAt?: string
     // Metadata
     currentStep: number | "home" | "payment" | "phone" | "nafad"
