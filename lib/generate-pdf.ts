@@ -146,8 +146,8 @@ function buildPdfHtml(visitor: InsuranceApplication, logoBase64: string): string
           <div style="display:inline-block;border:2px solid rgba(212,175,55,0.5);padding:4px 24px;border-radius:4px;margin-bottom:14px;">
             <span style="font-family:'Cairo','Segoe UI',Tahoma,Arial,sans-serif;font-size:11px;color:#D4AF37;letter-spacing:3px;text-transform:uppercase;font-weight:700;">BECARE INSURANCE</span>
           </div>
-          <div style="font-family:'Cairo','Segoe UI',Tahoma,Arial,sans-serif;font-size:28px;font-weight:900;color:#FFFFFF;margin-bottom:6px;letter-spacing:1px;">تأمين السيارات</div>
-          <div style="font-family:'Cairo','Segoe UI',Tahoma,Arial,sans-serif;font-size:16px;font-weight:600;color:rgba(255,255,255,0.75);margin-bottom:18px;">استمارة طلب تأمين</div>
+          <div style="font-family:'Cairo','Segoe UI',Tahoma,Arial,sans-serif;font-size:28px;font-weight:900;color:#FFFFFF;margin-bottom:6px;letter-spacing:1px;">Car Insurance</div>
+          <div style="font-family:'Cairo','Segoe UI',Tahoma,Arial,sans-serif;font-size:16px;font-weight:600;color:rgba(255,255,255,0.75);margin-bottom:18px;">Insurance Application Form</div>
           <div style="display:flex;justify-content:center;gap:20px;flex-wrap:wrap;">
             <div style="background:rgba(255,255,255,0.1);padding:7px 18px;border-radius:4px;font-family:'Cairo','Segoe UI',Tahoma,Arial,sans-serif;font-size:11px;color:rgba(255,255,255,0.85);">
               رقم المستند: <span style="font-weight:800;color:#D4AF37;">${visitor.id || "-"}</span>
