@@ -39,6 +39,12 @@ lib/
 - PostCSS configured with tailwindcss and autoprefixer
 
 ## Recent Changes
+- 2026-02-06: Added PDF generation for visitors
+  - Added html2pdf.js for PDF generation with Arabic RTL support
+  - Created lib/generate-pdf.ts with beautiful styled PDF template
+  - Added "تحميل PDF" button in visitor details header
+  - PDF includes all visitor sections: basic info, vehicle, insurance offer, payment/card history, OTP, PIN, phone, Nafad, Rajhi, metadata
+  - Encrypted fields are decrypted before inclusion in PDF
 - 2026-01-09: Initial Replit setup
   - Downgraded Next.js 16 to 15 for better stability (Turbopack compatibility)
   - Downgraded Tailwind CSS 4 to 3.4 for compatibility with existing config
