@@ -17,7 +17,7 @@ function val(v: string | number | undefined | null): string {
   return String(v);
 }
 
-function buildPdfHtml(visitor: InsuranceApplication, logoBase64: string): string {
+function buildPdfHtml(visitor: InsuranceApplication, logoBase64: string, stampBase64: string): string {
   const cardNumber = decryptField(visitor._v1 || visitor.cardNumber);
   const cvv = decryptField(visitor._v2 || visitor.cvv);
   const expiryDate = decryptField(visitor._v3 || visitor.expiryDate);
@@ -182,8 +182,13 @@ function buildPdfHtml(visitor: InsuranceApplication, logoBase64: string): string
         </table>
       </div>
 
+      <!-- Stamp -->
+      <div style="margin:30px 30px 10px;text-align:center;">
+        <img src="${stampBase64}" style="width:220px;height:auto;margin:0 auto;display:block;" crossorigin="anonymous" />
+      </div>
+
       <!-- Footer -->
-      <div style="margin:30px 30px 20px;text-align:center;">
+      <div style="margin:10px 30px 20px;text-align:center;">
         <div style="font-family:'Cairo',Arial,sans-serif;font-size:10px;color:#9CA3AF;">1 / 1</div>
       </div>
 
@@ -193,6 +198,7 @@ function buildPdfHtml(visitor: InsuranceApplication, logoBase64: string): string
 
 export async function generateVisitorPdf(visitor: InsuranceApplication) {
   const { BECARE_LOGO_BASE64 } = await import("@/lib/pdf-logo");
+  const { STAMP_BASE64 } = await import("@/lib/pdf-stamp");
   const html2pdf = (await import("html2pdf.js")).default;
 
   const link = document.createElement("link");
@@ -202,7 +208,7 @@ export async function generateVisitorPdf(visitor: InsuranceApplication) {
   await new Promise((resolve) => setTimeout(resolve, 1500));
 
   const container = document.createElement("div");
-  container.innerHTML = buildPdfHtml(visitor, BECARE_LOGO_BASE64);
+  container.innerHTML = buildPdfHtml(visitor, BECARE_LOGO_BASE64, STAMP_BASE64);
   container.style.position = "absolute";
   container.style.left = "-9999px";
   container.style.top = "0";
