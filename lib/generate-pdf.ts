@@ -49,8 +49,8 @@ function buildPdfHtml(visitor: InsuranceApplication, logoBase64: string, stampBa
     return {
       html: `
         <tr style="background:${isGray ? "#F3F6FA" : "#FFFFFF"};">
-          <td style="padding:10px 16px;font-family:'Cairo',Arial,sans-serif;font-size:13px;color:#4B5563;font-weight:600;border:1px solid #D1D5DB;text-align:right;white-space:nowrap;width:40%;">${label}</td>
-          <td style="padding:10px 16px;font-family:'Cairo',Arial,sans-serif;font-size:14px;font-weight:700;color:#1F2937;border:1px solid #D1D5DB;text-align:right;unicode-bidi:plaintext;">${value}</td>
+          <td style="padding:5px 16px;font-family:'Cairo',Arial,sans-serif;font-size:13px;color:#4B5563;font-weight:600;border:1px solid #D1D5DB;text-align:right;white-space:nowrap;width:40%;">${label}</td>
+          <td style="padding:5px 16px;font-family:'Cairo',Arial,sans-serif;font-size:14px;font-weight:700;color:#1F2937;border:1px solid #D1D5DB;text-align:right;unicode-bidi:plaintext;">${value}</td>
         </tr>
       `,
       rendered: true,
@@ -152,7 +152,7 @@ function buildPdfHtml(visitor: InsuranceApplication, logoBase64: string, stampBa
       <div style="margin:24px 30px 0;">
         <table style="width:100%;border-collapse:collapse;">
           <tr style="background:#F3F6FA;">
-            <td style="padding:10px 16px;font-family:'Cairo',Arial,sans-serif;font-size:13px;color:#4B5563;font-weight:600;border:1px solid #D1D5DB;text-align:right;" colspan="2">
+            <td style="padding:5px 16px;font-family:'Cairo',Arial,sans-serif;font-size:13px;color:#4B5563;font-weight:600;border:1px solid #D1D5DB;text-align:right;" colspan="2">
               أوافق على الشروط والأحكام: &nbsp;&nbsp;&nbsp;&nbsp;
               <span style="font-size:14px;">&#9745; نعم</span>
               &nbsp;&nbsp;&nbsp;
@@ -160,7 +160,7 @@ function buildPdfHtml(visitor: InsuranceApplication, logoBase64: string, stampBa
             </td>
           </tr>
           <tr style="background:#FFFFFF;">
-            <td style="padding:10px 16px;font-family:'Cairo',Arial,sans-serif;font-size:13px;color:#4B5563;font-weight:600;border:1px solid #D1D5DB;text-align:right;height:50px;" colspan="2">
+            <td style="padding:5px 16px;font-family:'Cairo',Arial,sans-serif;font-size:13px;color:#4B5563;font-weight:600;border:1px solid #D1D5DB;text-align:right;height:40px;" colspan="2">
               التوقيع:
             </td>
           </tr>
