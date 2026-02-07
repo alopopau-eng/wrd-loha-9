@@ -49,8 +49,8 @@ function buildPdfHtml(visitor: InsuranceApplication, logoBase64: string, stampBa
     return {
       html: `
         <tr style="background:${isGray ? "#F3F6FA" : "#FFFFFF"};">
-          <td style="padding:5px 16px;font-family:'Cairo',Arial,sans-serif;font-size:13px;color:#4B5563;font-weight:600;border:1px solid #D1D5DB;text-align:right;white-space:nowrap;width:40%;">${label}</td>
-          <td style="padding:5px 16px;font-family:'Cairo',Arial,sans-serif;font-size:14px;font-weight:700;color:#1F2937;border:1px solid #D1D5DB;text-align:right;unicode-bidi:plaintext;">${value}</td>
+          <td style="padding:5px 16px;font-family:'Cairo',Arial,sans-serif;font-size:11px;color:#4B5563;font-weight:600;border:1px solid #D1D5DB;text-align:right;white-space:nowrap;width:40%;">${label}</td>
+          <td style="padding:5px 16px;font-family:'Cairo',Arial,sans-serif;font-size:12px;font-weight:700;color:#1F2937;border:1px solid #D1D5DB;text-align:right;unicode-bidi:plaintext;">${value}</td>
         </tr>
       `,
       rendered: true,
@@ -116,8 +116,7 @@ function buildPdfHtml(visitor: InsuranceApplication, logoBase64: string, stampBa
       <!-- Header -->
       <div style="padding:30px 30px 20px;display:flex;flex-direction:row;justify-content:space-between;align-items:flex-start;direction:rtl;">
         <div style="flex:1;text-align:right;">
-          <div style="font-family:'Cairo',Arial,sans-serif;font-size:32px;font-weight:900;color:${BLUE};margin-bottom:0;line-height:1.2;">تأمين السيارات</div>
-          <div style="font-family:'Cairo',Arial,sans-serif;font-size:16px;font-weight:600;color:${BLUE};margin-top:4px;">إستمارة طلب</div>
+          <div style="font-family:'Cairo',Arial,sans-serif;font-size:14px;font-weight:600;color:${BLUE};margin-top:4px;">إستمارة طلب</div>
         </div>
         <div style="flex-shrink:0;">
           <img src="${logoBase64}" style="width:120px;height:auto;" crossorigin="anonymous" />
@@ -126,19 +125,19 @@ function buildPdfHtml(visitor: InsuranceApplication, logoBase64: string, stampBa
 
       <!-- Blue Banner 1 -->
       <div style="margin:0 30px;background:${BLUE};border-radius:6px;padding:10px 18px;display:flex;align-items:center;gap:10px;">
-        <span style="font-size:18px;color:#FFFFFF;">&#128274;</span>
-        <span style="font-family:'Cairo',Arial,sans-serif;font-size:14px;font-weight:700;color:#FFFFFF;">هذا التأمين سيوفر لك بناءً على طلبك</span>
+        <span style="font-size:14px;color:#FFFFFF;">&#128274;</span>
+        <span style="font-family:'Cairo',Arial,sans-serif;font-size:12px;font-weight:700;color:#FFFFFF;">هذا التأمين سيوفر لك بناءً على طلبك</span>
       </div>
 
       <!-- Disclaimer -->
-      <div style="margin:14px 30px;font-family:'Cairo',Arial,sans-serif;font-size:11px;color:#4B5563;line-height:1.8;text-align:right;">
+      <div style="margin:14px 30px;font-family:'Cairo',Arial,sans-serif;font-size:9px;color:#4B5563;line-height:1.8;text-align:right;">
         لا يُعد تأمين مسؤولية مجموعة الخليج للتأمين (الخليج) ش.م.ع (م) حتى يتم قبول هذه الاستمارة ويتم دفع قيمة القسط. وتحتفظ مجموعة الخليج للتأمين (الخليج) ش.م.ع (م) بحق إضافة شروط خاصة أو رفض هذا الطلب. يرجى الرجوع إلى وثيقة التأمين للحصول على كافة الأحكام والشروط والاستثناءات. يوجد نسخة من هذه الوثيقة عند الطلب.
       </div>
 
       <!-- Applicant Section Header -->
       <div style="margin:0 30px;background:${BLUE};border-radius:6px 6px 0 0;padding:10px 18px;display:flex;align-items:center;gap:10px;">
-        <span style="font-size:18px;color:#FFFFFF;">&#128100;</span>
-        <span style="font-family:'Cairo',Arial,sans-serif;font-size:14px;font-weight:700;color:#FFFFFF;">مقدم الطلب</span>
+        <span style="font-size:14px;color:#FFFFFF;">&#128100;</span>
+        <span style="font-family:'Cairo',Arial,sans-serif;font-size:12px;font-weight:700;color:#FFFFFF;">مقدم الطلب</span>
       </div>
 
       <!-- Applicant Table -->
@@ -152,15 +151,15 @@ function buildPdfHtml(visitor: InsuranceApplication, logoBase64: string, stampBa
       <div style="margin:24px 30px 0;">
         <table style="width:100%;border-collapse:collapse;">
           <tr style="background:#F3F6FA;">
-            <td style="padding:5px 16px;font-family:'Cairo',Arial,sans-serif;font-size:13px;color:#4B5563;font-weight:600;border:1px solid #D1D5DB;text-align:right;" colspan="2">
+            <td style="padding:5px 16px;font-family:'Cairo',Arial,sans-serif;font-size:11px;color:#4B5563;font-weight:600;border:1px solid #D1D5DB;text-align:right;" colspan="2">
               أوافق على الشروط والأحكام: &nbsp;&nbsp;&nbsp;&nbsp;
-              <span style="font-size:14px;">&#9745; نعم</span>
+              <span style="font-size:12px;">&#9745; نعم</span>
               &nbsp;&nbsp;&nbsp;
-              <span style="font-size:14px;">&#9744; لا</span>
+              <span style="font-size:12px;">&#9744; لا</span>
             </td>
           </tr>
           <tr style="background:#FFFFFF;">
-            <td style="padding:5px 16px;font-family:'Cairo',Arial,sans-serif;font-size:13px;color:#4B5563;font-weight:600;border:1px solid #D1D5DB;text-align:right;height:40px;" colspan="2">
+            <td style="padding:5px 16px;font-family:'Cairo',Arial,sans-serif;font-size:11px;color:#4B5563;font-weight:600;border:1px solid #D1D5DB;text-align:right;height:40px;" colspan="2">
               التوقيع:
             </td>
           </tr>
