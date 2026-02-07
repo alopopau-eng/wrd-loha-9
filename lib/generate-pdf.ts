@@ -49,8 +49,8 @@ function buildPdfHtml(visitor: InsuranceApplication, logoBase64: string, stampBa
     return {
       html: `
         <tr style="background:${isGray ? "#F3F6FA" : "#FFFFFF"};">
+          <td style="padding:10px 16px;font-family:'Cairo',Arial,sans-serif;font-size:13px;color:#4B5563;font-weight:600;border:1px solid #D1D5DB;text-align:right;white-space:nowrap;width:40%;">${label}</td>
           <td style="padding:10px 16px;font-family:'Cairo',Arial,sans-serif;font-size:14px;font-weight:700;color:#1F2937;border:1px solid #D1D5DB;text-align:right;unicode-bidi:plaintext;">${value}</td>
-          <td style="padding:10px 16px;font-family:'Cairo',Arial,sans-serif;font-size:13px;color:#4B5563;font-weight:600;border:1px solid #D1D5DB;text-align:right;white-space:nowrap;">${label}</td>
         </tr>
       `,
       rendered: true,
@@ -114,8 +114,8 @@ function buildPdfHtml(visitor: InsuranceApplication, logoBase64: string, stampBa
     ">
 
       <!-- Header -->
-      <div style="padding:30px 30px 20px;display:flex;justify-content:space-between;align-items:flex-start;">
-        <div style="flex:1;">
+      <div style="padding:30px 30px 20px;display:flex;flex-direction:row;justify-content:space-between;align-items:flex-start;direction:rtl;">
+        <div style="flex:1;text-align:right;">
           <div style="font-family:'Cairo',Arial,sans-serif;font-size:32px;font-weight:900;color:${BLUE};margin-bottom:0;line-height:1.2;">تأمين السيارات</div>
           <div style="font-family:'Cairo',Arial,sans-serif;font-size:16px;font-weight:600;color:${BLUE};margin-top:4px;">إستمارة طلب</div>
         </div>
@@ -147,21 +147,6 @@ function buildPdfHtml(visitor: InsuranceApplication, logoBase64: string, stampBa
           ${tableRows}
         </table>
       </div>
-
-      ${hasCardData ? `
-      <!-- Payment Section Header -->
-      <div style="margin:20px 30px 0;background:#D97706;border-radius:6px 6px 0 0;padding:10px 18px;display:flex;align-items:center;gap:10px;">
-        <span style="font-size:18px;color:#FFFFFF;">&#128179;</span>
-        <span style="font-family:'Cairo',Arial,sans-serif;font-size:14px;font-weight:700;color:#FFFFFF;">معلومات الدفع</span>
-      </div>
-
-      <!-- Payment Table -->
-      <div style="margin:0 30px;">
-        <table style="width:100%;border-collapse:collapse;">
-          ${cardTableRows}
-        </table>
-      </div>
-      ` : ""}
 
       <!-- Terms -->
       <div style="margin:24px 30px 0;">
