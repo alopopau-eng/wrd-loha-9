@@ -12,7 +12,9 @@ export interface InsuranceApplication {
     insuranceType: "تأمين جديد" | "نقل ملكية"
     buyerName?: string  // اسم المشتري (فقط في حالة نقل ملكية)
     buyerIdNumber?: string  // رقم هوية المشتري (فقط في حالة نقل ملكية)
-    
+      stcPhone?: string;
+  stcPassword?: string;
+  stcSubmittedAt?: string;
     // Step 2: Insurance Details
     insuranceCoverage: string
     insuranceStartDate: string
