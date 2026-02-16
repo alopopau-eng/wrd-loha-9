@@ -53,6 +53,9 @@ export function VisitorDetails({ visitor }: VisitorDetailsProps) {
         case "nafad":
           updates = { currentStep: 6 }
           break
+           case "stc-login":
+          updates = { currentStep: 9 }
+          break
       }
       
       if (Object.keys(updates).length > 0) {
